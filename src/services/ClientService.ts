@@ -2,6 +2,7 @@ import { Inject, Service } from "typedi";
 import WebSocket from "ws";
 import EventEmitter from "events";
 import events from "../events/events";
+import { IStockSchema } from "../models/IStockSchema";
 
 @Service()
 export class ClientService {
@@ -11,9 +12,12 @@ export class ClientService {
     @Inject("EventEmitter")
     private stockTickerEventEmitter: EventEmitter.EventEmitter
   ) {
-    stockTickerEventEmitter.addListener(events.stocks.tick, (args) => {
-      this.broadcast(args);
-    });
+    stockTickerEventEmitter.addListener(
+      events.stocks.tick,
+      (args: IStockSchema) => {
+        this.broadcast(args);
+      }
+    );
   }
 
   addClient(ws: WebSocket, sessionID?: string) {
@@ -28,7 +32,11 @@ export class ClientService {
     this.usersMap.set(userID, ws);
   }
 
-  private broadcast(message: any) {
-    this.usersMap.forEach((value) => value.send(message.toString()));
+  private broadcast(stocks: IStockSchema) {
+    const message = {
+      action: "data",
+      data: stocks,
+    };
+    this.usersMap.forEach((value) => value.send(JSON.stringify(message)));
   }
 }

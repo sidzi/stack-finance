@@ -15,7 +15,7 @@ export class StockTicker {
 
   async startTicking() {
     setInterval(async () => {
-      const stock = await this.stocksSchema.find().limit(1);
+      const stock = await this.stocksSchema.findOne();
       this.stockTickerEventEmitter.emit(events.stocks.tick, stock);
     }, config.tick_interval);
   }

@@ -4,20 +4,23 @@
     <script type="text/javascript">
       function ConnectToStockTickerServer() {
         if ("WebSocket" in window) {
-          var ws = new WebSocket("ws://localhost:8080");
+          const ws = new WebSocket("ws://localhost:8080");
 
           ws.onopen = function () {
             console.log("Connected");
           };
 
           ws.onmessage = function (evt) {
-            console.log(evt.data.toString());
-            const received_msg = evt.data;
+            const received_msg = JSON.parse(evt.data);
             switch (received_msg["action"]) {
               case "set-cookie":
                 window.document.cookie = received_msg["data"];
                 break;
               case "data":
+                console.log(`Received Data`);
+                document.body.innerHTML = `<p>${JSON.stringify(
+                  received_msg["data"]["stocks"]
+                )}</p>`;
                 break;
             }
           };
