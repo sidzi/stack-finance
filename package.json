@@ -1,0 +1,36 @@
+{
+  "name": "stack-finance",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/app.ts",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sidzi/stack-finance.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sidzi/stack-finance/issues"
+  },
+  "homepage": "https://github.com/sidzi/stack-finance#readme",
+  "devDependencies": {
+    "@types/mongoose": "^5.7.29",
+    "@types/node": "^14.0.14",
+    "@types/ws": "^7.2.6",
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "mongo-oplog": "^2.1.4",
+    "mongoose": "^5.9.21",
+    "typedi": "^0.8.0",
+    "ws": "^7.3.0"
+  }
+}
