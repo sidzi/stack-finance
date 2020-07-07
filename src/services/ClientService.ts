@@ -16,9 +16,12 @@ export class ClientService {
     });
   }
 
-  addClient(ws: WebSocket) {
-    console.log(`Adding Client`);
-    this.usersMap.set("1", ws);
+  addClient(ws: WebSocket, sessionID?: string) {
+    let userID: string;
+    if (sessionID) userID = sessionID;
+    else userID = Math.random().toString(12);
+    console.log(`Adding Client with ID ${userID}`);
+    this.usersMap.set(userID, ws);
   }
 
   private broadcast(message: any) {
