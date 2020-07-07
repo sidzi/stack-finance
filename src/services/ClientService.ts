@@ -18,13 +18,17 @@ export class ClientService {
 
   addClient(ws: WebSocket, sessionID?: string) {
     let userID: string;
-    if (sessionID) userID = sessionID;
-    else userID = Math.random().toString(12);
+    if (sessionID) {
+      userID = sessionID;
+    } else {
+      userID = Math.random().toString(12);
+      ws.send({ action: "set-cookie", data: sessionID });
+    }
     console.log(`Adding Client with ID ${userID}`);
     this.usersMap.set(userID, ws);
   }
 
   private broadcast(message: any) {
-    this.usersMap.get("1").send(message.toString());
+    this.usersMap.forEach((value) => value.send(message.toString()));
   }
 }
