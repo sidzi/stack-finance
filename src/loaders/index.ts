@@ -1,20 +1,19 @@
 import Container from "typedi";
-import { Mongoose } from "mongoose";
 import mongoose from "./mongoose";
-import StocksSchema from "../models/StocksSchema";
-import requestHandler from "../services/requestHandler";
-import config from "../config";
-import MongoOplog from "mongo-oplog";
-import { DBObserverService } from "../services/DBObserverService";
+import { StockTicker } from "../services/StockTicker";
+import EventEmitter from "events";
 
 export default async () => {
   console.log(`Loading...`);
 
   await mongoose();
-  Container.set("stocks", StocksSchema);
 
-  console.log(`Loaded...`);
+  const model = require("../models/StocksSchema").default;
+  Container.set("StocksModel", model);
 
-  const dbObserver = new DBObserverService(StocksSchema);
-  dbObserver.startObserving();
+  const eventEmitter = new EventEmitter.EventEmitter();
+  Container.set("EventEmitter", eventEmitter);
+
+  const dbObserver = Container.get(StockTicker);
+  dbObserver.startTicking();
 };

@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 import config from "./config";
+import "reflect-metadata";
 import requestHandler from "./services/requestHandler";
-import ReadableStream = NodeJS.ReadableStream;
 
 async function startServer() {
   await require("./loaders").default();

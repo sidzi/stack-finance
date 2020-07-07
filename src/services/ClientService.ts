@@ -1,16 +1,27 @@
-import { Service } from "typedi";
+import { Inject, Service } from "typedi";
 import WebSocket from "ws";
+import EventEmitter from "events";
+import events from "../events/events";
 
-@Service("ClientService")
+@Service()
 export class ClientService {
-  constructor(private usersMap: Map<string, WebSocket>) {}
+  private usersMap: Map<string, WebSocket> = new Map<string, WebSocket>();
+
+  constructor(
+    @Inject("EventEmitter")
+    private stockTickerEventEmitter: EventEmitter.EventEmitter
+  ) {
+    stockTickerEventEmitter.addListener(events.stocks.tick, (args) => {
+      this.broadcast(args);
+    });
+  }
 
   addClient(ws: WebSocket) {
     console.log(`Adding Client`);
     this.usersMap.set("1", ws);
   }
 
-  broadcast(message: string) {
-    this.usersMap.get("1").send(message);
+  private broadcast(message: any) {
+    this.usersMap.get("1").send(message.toString());
   }
 }

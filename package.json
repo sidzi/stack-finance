@@ -28,8 +28,8 @@
     "typescript": "^3.9.6"
   },
   "dependencies": {
-    "mongo-oplog": "^2.1.4",
     "mongoose": "^5.9.21",
+    "reflect-metadata": "^0.1.13",
     "typedi": "^0.8.0",
     "ws": "^7.3.0"
   }

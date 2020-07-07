@@ -1,16 +1,12 @@
 import mongoose, { Document, model } from "mongoose";
+import { IStockSchema } from "./IStockSchema";
 
 const StocksSchema = new mongoose.Schema({
   stocks: Array,
 });
 
-export interface IStockSchema {
-  stocks: IStock[];
-}
-
-interface IStock {
-  text: string;
-  value: string;
-}
-
-export default model<IStockSchema & Document>("StocksSchema", StocksSchema);
+export default model<IStockSchema & Document>(
+  "StocksSchema",
+  StocksSchema,
+  "stocks"
+);

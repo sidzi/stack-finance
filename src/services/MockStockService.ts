@@ -1,6 +1,4 @@
-import { Service, Inject } from "typedi";
-import { Document, model } from "mongoose";
-import IStockSchema from "../models/StocksSchema";
+import {Inject, Service} from "typedi";
 
 @Service()
 class MockStockService {

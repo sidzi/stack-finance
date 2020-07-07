@@ -2,7 +2,7 @@
 <html>
   <head>
     <script type="text/javascript">
-      function WebSocketTest() {
+      function ConnectToStockTickerServer() {
         if ("WebSocket" in window) {
           alert("WebSocket is supported by your Browser!");
 
@@ -12,12 +12,12 @@
           ws.onopen = function () {
             // Web Socket is connected, send data using send()
             ws.send("Message to send");
-            alert("Message is sent...");
+            console.log("Message is sent...");
           };
 
           ws.onmessage = function (evt) {
             var received_msg = evt.data;
-            alert("Message is received...");
+            console.log(received_msg);
           };
 
           ws.onclose = function () {
@@ -34,7 +34,7 @@
 
   <body>
     <div id="sse">
-      <a href="javascript:WebSocketTest()">Run WebSocket</a>
+      <a href="javascript:ConnectToStockTickerServer()">Run WebSocket</a>
     </div>
   </body>
 </html>
