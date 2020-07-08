@@ -27,15 +27,19 @@ export class ClientService {
 
   addClient(ws: WebSocket, sessionID?: string) {
     let userID: string;
-    if (sessionID) {
+    if (sessionID !== "undefined") {
       userID = sessionID;
     } else {
-      userID = Math.random().toString(12);
+      userID = Math.random().toString(36).substring(7);
       ws.send(JSON.stringify({ action: "set-cookie", data: sessionID }));
     }
 
     if (!this.userStocks.has(userID)) {
-      this.userStocks.set(userID, STOCKS_LIST);
+      // Just to generate randomization between stock lists
+      this.userStocks.set(
+        userID,
+        STOCKS_LIST.splice(0, Math.min(2, Math.floor(Math.random() * 10)))
+      );
     }
 
     console.log(`Adding Client with ID ${userID}`);
