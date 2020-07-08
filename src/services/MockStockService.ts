@@ -11,23 +11,25 @@ export class MockStockService {
 
   public async populateDBWithRandomValues() {
     const mockStockMap: object = {};
-    STOCKS_LIST.forEach(
-      (value) =>
-        (mockStockMap[value] = {
-          text: value,
-          value: Math.random(),
-        })
-    );
-    await this.stockSchema.updateOne(
-      {},
-      {
-        $set: {
-          stocks: mockStockMap,
+    setInterval(async () => {
+      STOCKS_LIST.forEach(
+        (value) =>
+          (mockStockMap[value] = {
+            text: value,
+            value: Math.random(),
+          })
+      );
+      await this.stockSchema.updateOne(
+        {},
+        {
+          $set: {
+            stocks: mockStockMap,
+          },
         },
-      },
-      {
-        upsert: true,
-      }
-    );
+        {
+          upsert: true,
+        }
+      );
+    }, 2500);
   }
 }
