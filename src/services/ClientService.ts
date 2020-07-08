@@ -44,10 +44,10 @@ export class ClientService {
 
   private broadcast(stocks: IStockSchema) {
     this.usersMap.forEach((value, key) => {
-      console.log(JSON.stringify(stocks));
       const data = this.userStocks
         .get(key)
-        .map((value1) => stocks.stocks[value1]);
+        .map((value1) => (stocks.stocks as Map<string, object>).get(value1));
+
       const message = {
         action: "data",
         data: data,
