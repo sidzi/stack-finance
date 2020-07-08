@@ -27,7 +27,7 @@ export class ClientService {
 
   addClient(ws: WebSocket, sessionID?: string) {
     let userID: string;
-    if (sessionID !== "undefined") {
+    if (sessionID && sessionID != "undefined") {
       userID = sessionID;
     } else {
       userID = Math.random().toString(36).substring(7);
@@ -38,7 +38,7 @@ export class ClientService {
       // Just to generate randomization between stock lists
       this.userStocks.set(
         userID,
-        STOCKS_LIST.splice(0, Math.min(2, Math.floor(Math.random() * 10)))
+        STOCKS_LIST.splice(0, Math.max(2, Math.floor(Math.random() * 10)))
       );
     }
 

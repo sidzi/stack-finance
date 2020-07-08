@@ -3,5 +3,5 @@ export default {
   mongo: {
     uri: process.env.MONGODB_URI,
   },
-  tick_interval: 1000, //tick time in ms
+  tick_interval: 5000, //tick time in ms
 };

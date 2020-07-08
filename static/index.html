@@ -17,9 +17,10 @@
 
             ws.onmessage = function (evt) {
               const received_msg = JSON.parse(evt.data);
+              console.log(received_msg);
               switch (received_msg["action"]) {
                 case "set-cookie":
-                  window.document.cookie = received_msg["data"];
+                  window.document.cookie = `${received_msg["data"]} SameSite=None; Secure`;
                   break;
                 case "data":
                   console.log(`Received Data`);
