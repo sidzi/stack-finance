@@ -4,7 +4,7 @@
     <script type="text/javascript">
       function ConnectToStockTickerServer() {
         if ("WebSocket" in window) {
-          const ws = new WebSocket("ws://localhost:8080");
+          const ws = new WebSocket("wss://stack-finance.herokuapp.com");
 
           ws.onopen = function () {
             console.log("Connected");
