@@ -1,8 +1,8 @@
 export interface IStockSchema {
-  stocks: IStock[];
+  stocks: object;
 }
 
-interface IStock {
+export interface IStock {
   text: string;
   value: string;
 }

@@ -19,7 +19,7 @@
               case "data":
                 console.log(`Received Data`);
                 document.body.innerHTML = `<p>${JSON.stringify(
-                  received_msg["data"]["stocks"]
+                  received_msg["data"]
                 )}</p>`;
                 break;
             }
