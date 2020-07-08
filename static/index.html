@@ -4,7 +4,7 @@
     <script type="text/javascript">
       function ConnectToStockTickerServer() {
         if ("WebSocket" in window) {
-          const ws = new WebSocket("ws://localhost:8080");
+          const ws = new WebSocket("ws://stack-finance.herokuapp.com/");
 
           ws.onopen = function () {
             console.log("Connected");
@@ -19,7 +19,7 @@
               case "data":
                 console.log(`Received Data`);
                 document.body.innerHTML = `<p>${JSON.stringify(
-                  received_msg["data"]
+                  received_msg
                 )}</p>`;
                 break;
             }
