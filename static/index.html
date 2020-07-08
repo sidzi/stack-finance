@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script type="text/javascript">
-      function ConnectToStockTickerServer() {
-        if ("WebSocket" in window) {
-          const ws = new WebSocket("wss://stack-finance.herokuapp.com");
-
-          ws.onopen = function () {
-            console.log("Connected");
-          };
-
-          ws.onmessage = function (evt) {
-            const received_msg = JSON.parse(evt.data);
-            switch (received_msg["action"]) {
-              case "set-cookie":
-                window.document.cookie = received_msg["data"];
-                break;
-              case "data":
-                console.log(`Received Data`);
-                document.body.innerHTML = `<p>${JSON.stringify(
-                  received_msg
-                )}</p>`;
-                break;
-            }
-          };
-
-          ws.onclose = function () {
-            alert("Connection is closed...");
-          };
-        } else {
-          alert("WebSocket NOT supported by your Browser!");
-        }
-      }
-    </script>
     <title>Stack Finance</title>
   </head>
 
   <body>
-    <div id="sse">
-      <a href="javascript:ConnectToStockTickerServer()">Run WebSocket</a>
+    <div>
+      <script type="text/javascript">
+        function ConnectToStockTickerServer() {
+          if ("WebSocket" in window) {
+            const ws = new WebSocket("wss://stack-finance.herokuapp.com");
+
+            ws.onopen = function () {
+              console.log("Connected");
+            };
+
+            ws.onmessage = function (evt) {
+              const received_msg = JSON.parse(evt.data);
+              switch (received_msg["action"]) {
+                case "set-cookie":
+                  window.document.cookie = received_msg["data"];
+                  break;
+                case "data":
+                  console.log(`Received Data`);
+                  document.body.innerHTML = `<p>${JSON.stringify(
+                    received_msg
+                  )}</p>`;
+                  break;
+              }
+            };
+
+            ws.onclose = function () {
+              alert("Connection is closed...");
+            };
+          } else {
+            alert("WebSocket NOT supported by your Browser!");
+          }
+        }
+        ConnectToStockTickerServer();
+      </script>
     </div>
   </body>
 </html>
