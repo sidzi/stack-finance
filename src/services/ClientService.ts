@@ -31,7 +31,7 @@ export class ClientService {
       userID = sessionID;
     } else {
       userID = Math.random().toString(12);
-      ws.send({ action: "set-cookie", data: sessionID });
+      ws.send(JSON.stringify({ action: "set-cookie", data: sessionID }));
     }
 
     if (!this.userStocks.has(userID)) {
