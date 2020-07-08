@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp static/index.html build/index.html",
     "start": "node build/app.js",
     "test": "jest"
   },
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/sidzi/stack-finance#readme",
   "devDependencies": {
+    "@types/express": "^4.17.7",
     "@types/jest": "^26.0.4",
     "@types/mongoose": "^5.7.29",
     "@types/node": "^14.0.14",
@@ -33,6 +34,7 @@
     "typescript": "^3.9.6"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "mongoose": "^5.9.21",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.8.0",
