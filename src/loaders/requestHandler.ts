@@ -4,7 +4,14 @@ import { ClientService } from "../services/ClientService";
 import { RequestOptions } from "https";
 
 export default function (ws: WebSocket, req: RequestOptions) {
-  const sessionID = req.headers?.cookie?.toString();
-  const clientService = Container.get(ClientService);
-  clientService.addClient(ws, sessionID);
+  ws.on("message", (data:string) => {
+    const dataJSON = JSON.parse(data);
+    switch (dataJSON["action"]) {
+      case "hello":
+        const cookie = dataJSON["id"];
+        const clientService = Container.get(ClientService);
+        clientService.addClient(ws, cookie);
+        break;
+    }
+  });
 }

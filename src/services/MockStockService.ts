@@ -16,7 +16,7 @@ export class MockStockService {
         (value) =>
           (mockStockMap[value] = {
             text: value,
-            value: Math.random(),
+            value: Math.random().toFixed(2),
           })
       );
       await this.stockSchema.updateOne(

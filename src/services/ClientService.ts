@@ -25,24 +25,30 @@ export class ClientService {
     );
   }
 
-  addClient(ws: WebSocket, sessionID?: string) {
+  addClient(ws: WebSocket, cookie?: string) {
     let userID: string;
-    if (sessionID && sessionID != "undefined") {
-      userID = sessionID;
-    } else {
+    if (cookie && cookie != "undefined") {
+      userID = this.getCookie("SessionID", cookie)
+    }
+
+    if (!userID) {
       userID = Math.random().toString(36).substring(7);
-      ws.send(JSON.stringify({ action: "set-cookie", data: sessionID }));
+      ws.send(
+        JSON.stringify({
+          action: "set-cookie",
+          data: `SessionID=${userID}; SameSite=Strict;`,
+        })
+      );
     }
 
     if (!this.userStocks.has(userID)) {
       // Just to generate randomization between stock lists
       this.userStocks.set(
         userID,
-        STOCKS_LIST.splice(0, Math.max(2, Math.floor(Math.random() * 10)))
+        STOCKS_LIST.slice(0, Math.floor(Math.random() * 10) + 2)
       );
     }
 
-    console.log(`Adding Client with ID ${userID}`);
     this.usersMap.set(userID, ws);
   }
 
@@ -58,5 +64,20 @@ export class ClientService {
       };
       value.send(JSON.stringify(message));
     });
+  }
+
+  private getCookie(name: string, cookie: string): string {
+    const nameLenPlus = name.length + 1;
+    return (
+      cookie
+        .split(";")
+        .map((c) => c.trim())
+        .filter((cookie) => {
+          return cookie.substring(0, nameLenPlus) === `${name}=`;
+        })
+        .map((cookie) => {
+          return decodeURIComponent(cookie.substring(nameLenPlus));
+        })[0] || null
+    );
   }
 }

@@ -9,10 +9,16 @@
       <script type="text/javascript">
         function ConnectToStockTickerServer() {
           if ("WebSocket" in window) {
-            const ws = new WebSocket("wss://stack-finance.herokuapp.com");
+            // const ws = new WebSocket("wss://stack-finance.herokuapp.com");
+            const ws = new WebSocket("ws://localhost:8080");
 
             ws.onopen = function () {
-              console.log("Connected");
+              console.log(`Connected`);
+              const message = JSON.stringify({
+                action: "hello",
+                id: document.cookie.toString(),
+              });
+              ws.send(message);
             };
 
             ws.onmessage = function (evt) {
@@ -20,11 +26,12 @@
               console.log(received_msg);
               switch (received_msg["action"]) {
                 case "set-cookie":
-                  window.document.cookie = `${received_msg["data"]} SameSite=None; Secure`;
+                  console.log(received_msg["data"]);
+                  document.cookie = `${received_msg["data"]}`;
                   break;
                 case "data":
                   console.log(`Received Data`);
-                  document.body.innerHTML = `<p>${JSON.stringify(
+                  document.body.innerHTML += `<p>${JSON.stringify(
                     received_msg
                   )}</p>`;
                   break;
