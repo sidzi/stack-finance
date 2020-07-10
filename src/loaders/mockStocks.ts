@@ -9,4 +9,5 @@ export const STOCKS_LIST = [
   "IAU",
   "UYA",
   "POA",
+  "PWA",
 ];

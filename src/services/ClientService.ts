@@ -8,10 +8,6 @@ import { STOCKS_LIST } from "../loaders/mockStocks";
 @Service()
 export class ClientService {
   private usersMap: Map<string, WebSocket> = new Map<string, WebSocket>();
-  private userStocks: Map<string, Array<string>> = new Map<
-    string,
-    Array<string>
-  >();
 
   constructor(
     @Inject("EventEmitter")
@@ -26,41 +22,45 @@ export class ClientService {
   }
 
   addClient(ws: WebSocket, cookie?: string) {
-    let userID: string;
+    let sessionID: string;
     if (cookie && cookie != "undefined") {
-      userID = this.getCookie("SessionID", cookie)
+      sessionID = this.getCookie("SessionID", cookie);
     }
 
-    if (!userID) {
-      userID = Math.random().toString(36).substring(7);
+    if (!sessionID) {
+      const randomStockSymbols = STOCKS_LIST.slice(
+        0,
+        Math.floor(Math.random() * 10) + 2
+      );
+      const base64edSessionID = Buffer.from(
+        randomStockSymbols.join(":"),
+        "utf-8"
+      ).toString("base64");
+
       ws.send(
         JSON.stringify({
           action: "set-cookie",
-          data: `SessionID=${userID}; SameSite=Strict;`,
+          data: `SessionID=${base64edSessionID}; SameSite=Strict;`,
         })
       );
+      sessionID = base64edSessionID;
     }
 
-    if (!this.userStocks.has(userID)) {
-      // Just to generate randomization between stock lists
-      this.userStocks.set(
-        userID,
-        STOCKS_LIST.slice(0, Math.floor(Math.random() * 10) + 2)
-      );
-    }
-
-    this.usersMap.set(userID, ws);
+    this.usersMap.set(sessionID, ws);
   }
 
   private broadcast(stocks: IStockSchema) {
     this.usersMap.forEach((value, key) => {
-      const data = this.userStocks
-        .get(key)
-        .map((value1) => (stocks.stocks as Map<string, object>).get(value1));
+      const data = Buffer.from(key, "base64").toString("utf-8");
+      const stockSymbols = data.split(":");
+
+      const stocksWithValue = stockSymbols.map((value1) =>
+        (stocks.stocks as Map<string, object>).get(value1)
+      );
 
       const message = {
         action: "data",
-        data: data,
+        data: stocksWithValue,
       };
       value.send(JSON.stringify(message));
     });
